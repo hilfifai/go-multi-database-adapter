@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: go_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: goappdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
+    ports:
+      - "3308:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: go_mysql_app
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASS: 
+      DB_NAME: goappdb
+    ports:
+      - "8585:8585"
+
+volumes:
+  dbdata:
